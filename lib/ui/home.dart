@@ -11,6 +11,7 @@ class BMI extends StatefulWidget {
 }
 
 class _BMIState extends State<BMI> {
+  final bmiFormKey = GlobalKey<FormState>();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
@@ -27,96 +28,100 @@ class _BMIState extends State<BMI> {
         textDirection: TextDirection.ltr,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-         Image.asset(
+          Image.asset(
             'images/111 bmilogo.png',
             width: 60.0,
             height: 100.0,
           ),
-          
-          Padding(padding: EdgeInsets.all(10.0),
-          child: Container(
-            padding: const EdgeInsets.all(20.0),
-            margin: EdgeInsets.all(10.0),
-            color: Colors.grey,
-            child: Form(
-              child: Column(
-                children: [
-                  // Age input field
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.grey,
+              child: Form(
+                key: bmiFormKey,
+                child: Column(
+                  children: [
+                    // Age input field
 
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.person),
-                      label: Text("Age"),
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.person),
+                        label: Text("Age"),
+                      ),
+                      keyboardType: TextInputType.number,
+                      controller: _ageController,
+                      // validator: ,
                     ),
-                    keyboardType: TextInputType.number,
-                    controller: _ageController,
-                    // validator: ,
-                  ),
 
-                  // Height input field
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.bar_chart_sharp),
-                      label: Text("Height in meters"),
+                    // Height input field
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.bar_chart_sharp),
+                        label: Text("Height in meters"),
+                      ),
+                      keyboardType: TextInputType.number,
+                      controller: _heightController,
+                      // validator: (value) {
+
+                      // },
                     ),
-                    keyboardType: TextInputType.number,
-                    controller: _heightController,
-                    // validator: (value) {
 
-                    // },
-                  ),
-
-                  // Weight input field
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      icon: Icon(Icons.balance),
-                      label: Text("Weight in kg"),
+                    // Weight input field
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        icon: Icon(Icons.balance),
+                        label: Text("Weight in kg"),
+                      ),
+                      keyboardType: TextInputType.number,
+                      controller: _weightController,
+                      // validator: ,
                     ),
-                    keyboardType: TextInputType.number,
-                    controller: _weightController,
-                    // validator: ,
-                  ),
 
-                  const Padding(
-                    padding: EdgeInsets.all(15.0),
-                  ),
+                    const Padding(
+                      padding: EdgeInsets.all(15.0),
+                    ),
 
-                  TextButton(
-                    onPressed: () {
-                      int height = int.parse(_heightController.text);
-                      int weight = int.parse(_weightController.text);
-                      setState(() {
-                        bmi = (weight / pow(height, 2)).toString();
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      backgroundColor: Colors.pink,
-                    ),
-                    child: const Text(
-                      "Calculate",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )
-                ],
+                    TextButton(
+                      onPressed: () {
+                        int height = int.parse(_heightController.text);
+                        int weight = int.parse(_weightController.text);
+                        setState(() {
+                          bmi = (weight / pow(height, 2)).toString();
+                        });
+                        bmiFormKey.currentState?.reset();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: Colors.pink,
+                      ),
+                      child: const Text(
+                        "Calculate",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),),
-          
+          ),
           Padding(
-          padding: EdgeInsets.all(10.0),
-          child:Text("Your bmi: $bmi",
-
-          style: TextStyle(
-            color: Colors.blue,
-            fontSize: 18.0,
-          ),),),
-         
-          Text("Overweight",
-
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: 18.0,
-          ),),
+            padding: const EdgeInsets.all(10.0),
+            child: Text(
+              "Your bmi: $bmi",
+              style: const TextStyle(
+                color: Colors.blue,
+                fontSize: 18.0,
+              ),
+            ),
+          ),
+          const Text(
+            "Overweight",
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 18.0,
+            ),
+          ),
         ],
       ),
     );
